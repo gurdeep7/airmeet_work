@@ -1,50 +1,69 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getcarloading, getcarsuccess } from "../store/action";
+import { decrementPage, getcarloading, getcarsuccess, incrementPage } from "../store/action";
 
 export const Cars = ()=>{
 const dispatch = useDispatch()
 const [show,setShow] = useState([])
 
-    const { loading, cars} = useSelector(
+    const { loading, cars, page} = useSelector(
         (state) => ({
           cars: state.carsState.cars,
           loading: state.carsState.loading,
+          page:state.carsState.page
         }));
 
-        function req(){
+        function req(page){
             try{
-getcarloading()
-        axios.get("https://airmeet1.herokuapp.com/car").then((res)=>{
+dispatch(getcarloading())
+        axios.get(`https://airmeet1.herokuapp.com/car?page=${page}`).then((res)=>{
 dispatch(getcarsuccess(res.data))
 setShow(res.data)
-
-
         })
-        console.log(loading)
+       
             }catch(e){
                 console.log(e)
             }
         }
 
         useEffect(()=>{
-        req()
+        req(page)
         },[])
 
-const [check,setCheck]= useState({})
+const [check,setCheck]= useState([])
         const handleCheckbox = (event)=>{
             const target = event.target;
             const value = target.type === 'checkbox' ? target.checked : target.value;
             const name = target.name;
     
-            setCheck({
-              [name]: value
-            });
+            setCheck(
+               [...check,{[name]:value}]
+            );
             console.log(check)
         }
-        return<div className="bg-green-300">
-         {loading?<img className="m-auto" src="https://i.pinimg.com/originals/d7/34/49/d73449313ecedb997822efecd1ee3eac.gif"></img>:<table className="m-auto">
+
+        const handleDelete=()=>{
+
+            for(let i = 0; i < check.length; i++){
+                
+            }
+            axios.delete(`https://airmeet1.herokuapp.com/car/${id}`).then((res)=>{
+                
+                        })
+        }
+
+        const handleIncrement = ()=>{
+           
+            dispatch(incrementPage())
+            req(page)
+        }
+        const handleDecrement = ()=>{
+            dispatch(decrementPage())
+            req(page)
+        }
+        return<div className="bg-green-300 h-screen">
+         {loading?<img className="m-auto h-96" src="https://i.pinimg.com/originals/d7/34/49/d73449313ecedb997822efecd1ee3eac.gif"></img>:<table className="m-auto h-96">
                <tr>
                <td className="w-28 border-2 font-bold border-gray-600">Sr no</td>
                    <td className="w-28 border-2 font-bold border-gray-600">make</td>
@@ -52,10 +71,10 @@ const [check,setCheck]= useState({})
                    <td className="w-28 border-2 font-bold border-gray-600">year</td>
                    <td className="w-28 border-2 font-bold border-gray-600">Select</td>
                </tr>            
-               {show?.map((el,i)=>{
+               {cars?.cars.map((el,i)=>{
                return <tr key={el._id}>
                    
-                   <td className="w-28 border-2 border-gray-600">{i+1}</td>
+                   <td className="w-28 border-2 border-gray-600">{(page-1)*10 +i +1}</td>
         <td className="w-28 border-2 border-gray-600">{el.car_make}</td>
                    <td className="w-28 border-2 border-gray-600">{el.car_model}</td>
                    <td className="w-28 border-2 border-gray-600">{el.car_year}</td>
@@ -63,6 +82,6 @@ const [check,setCheck]= useState({})
                    </tr>
 })}
            </table>}
-         
+         <div className="w-fit m-auto"><button disabled={page == 1} onClick={handleDecrement} className="m-4 w-20 h-8 bg-slate-200 hover:bg-slate-600">Previous</button><button onClick={handleIncrement} className="m-4 hover:bg-slate-600 w-20 h-8 bg-slate-200">Next</button></div>
         </div>
     }

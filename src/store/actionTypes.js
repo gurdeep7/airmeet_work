@@ -6,3 +6,5 @@ export const ADD_CARS_ERROR = "ADD_CARS_ERROR";
 export const GET_CARS_FAVOURITE = "GET_CARS_FAVOURITE";
 export const GET_CARS_SUCCESS = "GET_CARS_SUCCESS";
 export const GET_CARS_ERROR = "GET_CARS_ERROR";
+export const INC_PAGE = "INC_PAGE"
+export const DEC_PAGE = "DEC_PAGE"
