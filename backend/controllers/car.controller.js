@@ -16,8 +16,12 @@ router.post("",async(req,res)=>{
 
  router.get("",async(req,res)=>{
     try{
-        const cars =await car.find().lean().exec()
-        res.status(201).send(cars)
+        const page = +req.query.page
+       
+        const cars =await car.find().skip((page-1)*10).limit(10).lean().exec()
+
+        const totalPages = Math.ceil(await car.find().countDocuments()/10)
+        res.status(201).json({cars,totalPages})
     }catch(e){
         res.status(500).json({status:e.message})
     }

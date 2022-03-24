@@ -1,7 +1,7 @@
 import { GET_CARS_LOADING, GET_CARS_SUCCESS } from "./actionTypes"
 
 
-const init = {cars:[],loading:false}
+const init = {cars:[],loading:true}
 
 export const carReducer = (state = init,{type,payload,loading})=>{
     switch(type){
@@ -11,10 +11,9 @@ export const carReducer = (state = init,{type,payload,loading})=>{
         }
         case GET_CARS_SUCCESS:
         { state.cars = payload
-            console.log(state)
             return{
                 
-               state:payload,
+               state,
                 loading:false
             }
 }
