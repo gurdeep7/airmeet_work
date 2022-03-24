@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { decrementPage, getcarloading, getcarsuccess, incrementPage } from "../store/action";
 
-export const Cars = ()=>{
+export const Cars = ({setData})=>{
 const dispatch = useDispatch()
 const [show,setShow] = useState([])
 
@@ -40,19 +40,11 @@ const [check,setCheck]= useState([])
             setCheck(
                [...check,{[name]:value}]
             );
+            setData(check)
             console.log(check)
         }
 
-        const handleDelete=()=>{
-
-            for(let i = 0; i < check.length; i++){
-                
-            }
-            axios.delete(`https://airmeet1.herokuapp.com/car/${id}`).then((res)=>{
-                
-                        })
-        }
-
+       
         const handleIncrement = ()=>{
            
             dispatch(incrementPage())
