@@ -19,6 +19,12 @@ app.use(express.json())
 
 app.use(helmet())
 
+app.use((req, res, next) => {
+    res.set("Access-Control-Allow-Credentials",true)
+    res.set("X-XSS-Protection", "1; mode=block");
+    res.set("Cache-control", "private")
+    next();
+  });
 app.use(session({
     genid: function(req) {
       return v4() // use UUIDs for session IDs
@@ -27,7 +33,7 @@ app.use(session({
     proxy: true,
     secret: 'xgZyQK',
     rolling:true,
-   cookie:{ httpOnly: false, sameSite:"none", secure:true, maxAge:20 * 60000} //20 minutes
+   cookie:{ httpOnly: true, sameSite:"none", secure:true, maxAge:20 * 60000} //20 minutes
   
   }))
 
