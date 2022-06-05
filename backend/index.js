@@ -27,7 +27,7 @@ app.use(session({
     proxy: true,
     secret: 'xgZyQK',
     rolling:true,
-   cookie:{ httpOnly: true, sameSite:"none", secure:true, maxAge:20 * 60000} //20 minutes
+   cookie:{ httpOnly: false, sameSite:"none", secure:true, maxAge:20 * 60000} //20 minutes
   
   }))
 
