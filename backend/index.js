@@ -22,7 +22,7 @@ app.use(helmet())
 app.use((req, res, next) => {
     res.set("Access-Control-Allow-Credentials",true)
     res.set("X-XSS-Protection", "1; mode=block");
-    res.set("Cache-control", "private")
+    res.set("Cache-control", "private, no-cache, no-store")
     next();
   });
 app.use(session({
