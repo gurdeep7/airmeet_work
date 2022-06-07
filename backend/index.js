@@ -29,7 +29,6 @@ app.use(session({
     genid: function(req) {
       return v4() // use UUIDs for session IDs
     },
-    
     proxy: true,
     secret: 'xgZyQK',
     rolling:true,

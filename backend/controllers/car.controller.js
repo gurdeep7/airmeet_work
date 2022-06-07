@@ -19,7 +19,7 @@ router.post("",async(req,res)=>{
         const page = +req.query.page
        
         const cars =await car.find().skip((page-1)*10).limit(10).lean().exec()
-
+        req.session.user = page;
         const totalPages = Math.ceil(await car.find().countDocuments()/10)
         res.status(201).json({cars,totalPages})
     }catch(e){
